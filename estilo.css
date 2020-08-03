@@ -1,0 +1,13 @@
+.container {
+    padding: 25px;  
+    background: #eef0f3;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px #ccc;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 700px;
+}
+
+#res {    
+    margin: auto;
+}
