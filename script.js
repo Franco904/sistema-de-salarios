@@ -10,6 +10,10 @@ let valorHoras = document.querySelector('input#valorHoras')
 let qtdHoras = document.querySelector('input#qtdHoras')
 
 function calcular() {
+    while (dados.length > 0) {
+        dados.pop()
+    }
+
     if (nome.value.length == 0 || valorHoras.value.length == 0 || qtdHoras.value.length == 0) {
         erro.style.display = 'block'
         sucesso.style.display = 'none'
