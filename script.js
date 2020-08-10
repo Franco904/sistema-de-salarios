@@ -3,6 +3,7 @@ const listaRelatorios = []
 const erro = document.getElementById('erro')
 const sucesso = document.getElementById('sucesso')
 const btnRelatorio = document.getElementById('relatorio')
+const btnCalculo = document.getElementById('calculo')
 const res = document.getElementById('res')
 
 let nome = document.querySelector('input#nome')
@@ -11,10 +12,6 @@ let qtdHoras = document.querySelector('input#qtdHoras')
 
 function calcular() {
     let dados = []
-
-    // while (dados.length > 0) {
-    //     dados.pop()
-    // }
 
     if (nome.value.length == 0 || valorHoras.value.length == 0 || qtdHoras.value.length == 0) {
         erro.style.display = 'block'
@@ -71,6 +68,8 @@ function salarioLiquido(salBruto, impostoRenda, dados) {
     salLiq = salBruto - impostoRenda
     dados.push(salLiq)
 
+    btnCalculo.style.display = 'none'
+
     listaRelatorios.push(dados)
 }
 
@@ -95,7 +94,6 @@ function mostrarRelatorio() {
     relatorios()
 }
 
-console.log('Relatórios:')
 function relatorios() {
     let resultado = ''
 
@@ -117,6 +115,7 @@ function relatorios() {
 }
 
 function limpar() {
+    btnCalculo.style.display = 'inline'
     erro.style.display = 'none'
     sucesso.style.display = 'none'
     btnRelatorio.style.display = 'none'
