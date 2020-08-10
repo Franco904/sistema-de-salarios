@@ -1,4 +1,4 @@
-const dados = []
+const listaRelatorios = []
 
 const erro = document.getElementById('erro')
 const sucesso = document.getElementById('sucesso')
@@ -10,9 +10,11 @@ let valorHoras = document.querySelector('input#valorHoras')
 let qtdHoras = document.querySelector('input#qtdHoras')
 
 function calcular() {
-    while (dados.length > 0) {
-        dados.pop()
-    }
+    let dados = []
+
+    // while (dados.length > 0) {
+    //     dados.pop()
+    // }
 
     if (nome.value.length == 0 || valorHoras.value.length == 0 || qtdHoras.value.length == 0) {
         erro.style.display = 'block'
@@ -22,7 +24,7 @@ function calcular() {
     }
     else {
         dados.push(nome.value, valorHoras.value, qtdHoras.value)
-        salarioBruto(dados[1], dados[2])
+        salarioBruto(dados[1], dados[2], dados)
         
         sucesso.style.display = 'block'
         erro.style.display = 'none'
@@ -30,14 +32,14 @@ function calcular() {
     }
 }
 
-function salarioBruto(valorHoras, qtdHoras) {
+function salarioBruto(valorHoras, qtdHoras, dados) {
     salBruto = valorHoras * qtdHoras
     dados.push(salBruto)
 
-    impostoRenda(dados[3])
+    impostoRenda(dados[3], dados)
 }
 
-function impostoRenda(salBruto) {
+function impostoRenda(salBruto, dados) {
     impRenda = 0
     // Obs: Fiz os cálculos com a tabela mensal, pois a anual só se aplica a ajustes, e não a salários.
 
@@ -62,13 +64,14 @@ function impostoRenda(salBruto) {
 
     }
     dados.push(impRenda)
-    salarioLiquido(dados[3], dados[4])
+    salarioLiquido(dados[3], dados[4], dados)
 }
 
-function salarioLiquido(salBruto, impostoRenda) {
+function salarioLiquido(salBruto, impostoRenda, dados) {
     salLiq = salBruto - impostoRenda
     dados.push(salLiq)
 
+    listaRelatorios.push(dados)
 }
 
 function mostrarRelatorio() {
@@ -79,15 +82,38 @@ function mostrarRelatorio() {
     let salBrutoRes = document.getElementById('salBrutoRes')
     let salLiquido = document.getElementById('salLiquidoRes')
 
-    nomeRes.value = dados[0]
-    valorHorasRes.value = dados[1]
-    qtdHorasRes.value = dados[2]
-    salBrutoRes.value = dados[3]
-    impRendaRes.value = dados[4].toFixed(2)
-    salLiquido.value = dados[5].toFixed(2)
+    nomeRes.value = listaRelatorios[listaRelatorios.length - 1][0]
+    valorHorasRes.value = listaRelatorios[listaRelatorios.length - 1][1]
+    qtdHorasRes.value = listaRelatorios[listaRelatorios.length - 1][2]
+    salBrutoRes.value = listaRelatorios[listaRelatorios.length - 1][3]
+    impRendaRes.value = listaRelatorios[listaRelatorios.length - 1][4].toFixed(2)
+    salLiquido.value = listaRelatorios[listaRelatorios.length - 1][5].toFixed(2)
 
     res.style.display = 'block'
     sucesso.style.display = 'none'
+
+    relatorios()
+}
+
+console.log('Relatórios:')
+function relatorios() {
+    let resultado = ''
+
+    const mostrarRel = function(item, index) {
+        
+        resultado +=  
+        ('<strong>=========================</strong><br>') +
+        (`Nome pessoal: ${item[0]}<br>`) +
+        (`Valor / hora trabalhada: ${item[1]}<br>`) +
+        (`Quant. Horas: ${item[2]}<br>`) +
+        (`Imposto de renda: ${item[3]}<br>`) +
+        (`Salário Bruto: ${item[4].toFixed(2)}<br>`) +
+        (`Salário Líquido: ${item[5].toFixed(2)}<br>`) +
+        ('<strong>=========================</strong><br>')
+    } 
+
+    listaRelatorios.forEach(mostrarRel)
+    document.getElementById('info').innerHTML = resultado
 }
 
 function limpar() {
